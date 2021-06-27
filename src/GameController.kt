@@ -1,4 +1,4 @@
-class GameController : User("CPU",0), Callback {
+class GameController : User("CPU",0), ILeaderBoard {
     private var scoreboard: MutableMap<String, Int> = mutableMapOf()
     private var playerList: MutableList<User> = arrayListOf()
     private val choice: Array<String> = arrayOf("batu", "gunting", "kertas")
@@ -15,7 +15,6 @@ class GameController : User("CPU",0), Callback {
         println("======================")
         println("1) Game Start")
         println("2) Leaderboard")
-        println("3) Show Players")
         println("")
         println("")
 
@@ -49,8 +48,6 @@ class GameController : User("CPU",0), Callback {
             val player2 = User(playerName2,scoreboard.getValue(playerName2))
             playerList.add(player1)
             playerList.add(player2)
-            scoreboard.put(player1.name, scoreboard.getValue(playerName1))
-            scoreboard.put(player2.name, scoreboard.getValue(playerName2))
             playerTemp.add(player1.name)
             playerTemp.add(player2.name)
             println("Player $playerName1 & $playerName2 has been created...")
@@ -69,8 +66,7 @@ class GameController : User("CPU",0), Callback {
                                 || (userInputTemp[0] == "batu" && userInputTemp[1] == "gunting")) -> {
 
                             player1.score += 1
-                            //scoreboard[player1.name] = player1.score
-                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            scoreboard[player1.name] = scoreboard.getValue(player1.name)+1
                             println("${player1.name} WIN!")
                             menu()
 
@@ -80,8 +76,7 @@ class GameController : User("CPU",0), Callback {
                                 || (userInputTemp[1] == "batu" && userInputTemp[0] == "gunting")) -> {
 
                             player2.score += 1
-                            //scoreboard[player2.name] = player2.score
-                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            scoreboard[player2.name] = scoreboard.getValue(player2.name)+1
                             println("${player2.name} WIN!")
                             menu()
 
@@ -101,8 +96,8 @@ class GameController : User("CPU",0), Callback {
             val player2 = User(playerName2, 0)
             playerList.add(player1)
             playerList.add(player2)
-            scoreboard.put(player1.name, 0)
-            scoreboard.put(player2.name, 0)
+            scoreboard[player1.name] = 0
+            scoreboard[player2.name] = 0
             playerTemp.add(player1.name)
             playerTemp.add(player2.name)
             println("Player $playerName1 & $playerName2 has been created...")
@@ -121,8 +116,7 @@ class GameController : User("CPU",0), Callback {
                                 || (userInputTemp[0] == "batu" && userInputTemp[1] == "gunting")) -> {
 
                             player1.score += 1
-                            //scoreboard[player1.name] = player1.score
-                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            scoreboard[player1.name] = scoreboard.getValue(player1.name)+1
                             println("${player1.name} WIN!")
                             menu()
 
@@ -132,8 +126,7 @@ class GameController : User("CPU",0), Callback {
                                 || (userInputTemp[1] == "batu" && userInputTemp[0] == "gunting")) -> {
 
                             player2.score += 1
-                            //scoreboard[player2.name] = player2.score
-                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            scoreboard[player2.name] = scoreboard.getValue(player2.name)+1
                             println("${player2.name} WIN!")
                             menu()
 
@@ -157,8 +150,6 @@ class GameController : User("CPU",0), Callback {
         println("")
         println("______ LEADERBOARD _______")
         println("")
-
-
         for (key in scoreboard.keys) {
             println("${key} = ${scoreboard[key]}")
         }

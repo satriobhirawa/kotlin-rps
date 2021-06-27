@@ -1,3 +1,0 @@
-interface Callback {
-    fun leaderboard()
-}

@@ -3,14 +3,9 @@ class Main {
         @JvmStatic
         fun main(args: Array<String>){
             val game = GameController()
-
             while(true){
                 game.menu()
             }
-
-
-
-            //game.printPlayerName()
         }
 
 

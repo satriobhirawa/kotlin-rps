@@ -1,0 +1,3 @@
+interface ILeaderBoard {
+    fun leaderboard()
+}
