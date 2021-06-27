@@ -2,9 +2,12 @@ class Main {
     companion object {
         @JvmStatic
         fun main(args: Array<String>){
-            val game = Game()
-            game.menu()
-            game.printPlayerName()
+            val game = GameController()
+            while(true){
+                game.menu()
+            }
+
+            //game.printPlayerName()
         }
     }
 

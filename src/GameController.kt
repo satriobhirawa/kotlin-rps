@@ -1,23 +1,24 @@
-class Game : User() {
-    private lateinit var scoreboard : Map<String, Int>
-    private var score: Int = 0
-    private var playerList = MutableList<String>()
+class GameController : User("CPU") {
+    private var scoreboard : MutableMap<String, Int> = mutableMapOf()
+    private var playerList : MutableList<User> = arrayListOf()
 
     fun menu(){
         println("======================")
         println("______ WELCOME _______")
         println("======================")
         println("1) Game Start")
-        println("2) High Score")
+        println("2) Leaderboard")
         println("3) Exit")
+        println("4) Show")
 
         val userMenuChoice: Int? = readLine()?.toInt()
         try {
             if (userMenuChoice is Int){
                 when(userMenuChoice){
                     1 -> gameStart()
-                    2 -> highScore()
+                    2 -> leaderboard()
                     3 -> exit()
+                    4 -> printPlayerName()
                     else -> {
                         println("Please choose between 1-3")
                     }
@@ -40,9 +41,19 @@ class Game : User() {
         for(i in 1..2) {
             println("Insert player $i name ")
             val playerName: String = readLine().toString()
-            val player = User()
-            player.name = playerName
-            playerList.add(playerName)
+
+            val player = User(playerName)
+            //add player to list
+
+
+            if(!playerList.contains(player) && !(scoreboard.containsKey(player.name))){
+                scoreboard.put(player.name,player.score)
+                playerList.add(player)
+                println("Player $playerName has been created...")
+            }else{
+                println("Player is already exist!!")
+                menu()
+            }
         }
     }
 
@@ -50,17 +61,17 @@ class Game : User() {
 
     }
 
-    fun highScore(){
+    fun leaderboard(){
 
     }
 
-    fun inGame(){
+    fun gameLogic(){
 
     }
 
     fun printPlayerName(){
         for(i in 0..playerList.size.minus(1)){
-            println(playerList[i])
+            println(playerList[i].name)
         }
     }
 

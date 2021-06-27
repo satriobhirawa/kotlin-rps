@@ -1,5 +1,4 @@
-open class User{
-    lateinit var name: String
+open class User(val name : String, var score : Int = 0){
 
     open fun playerCreation(){}
 }
