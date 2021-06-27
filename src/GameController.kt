@@ -1,4 +1,4 @@
-class GameController : User("CPU"), Callback {
+class GameController : User("CPU",0), Callback {
     private var scoreboard: MutableMap<String, Int> = mutableMapOf()
     private var playerList: MutableList<User> = arrayListOf()
     private val choice: Array<String> = arrayOf("batu", "gunting", "kertas")
@@ -23,9 +23,8 @@ class GameController : User("CPU"), Callback {
         try {
             if (userMenuChoice is Int) {
                 when (userMenuChoice) {
-                    1 -> gameStart()
+                    1 -> gameLogic()
                     2 -> leaderboard()
-                    3 -> printPlayerName()
                     else -> {
                         println("Please choose between 1-3")
                     }
@@ -38,45 +37,41 @@ class GameController : User("CPU"), Callback {
 
     }
 
-    private fun gameStart() {
-        for (i in 1..2) {
+    private fun gameLogic(){
 
-            println("Insert player $i name ")
-            val playerName: String = readLine().toString().lowercase()
-            //var scoreFromScoreBoard = scoreboard.getValue(playerName)
-            var player = User(playerName)
-            //add player to list
+        println("Insert player 1 name ")
+        val playerName1: String = readLine().toString().lowercase()
 
-            playerList.add(player)
-            playerList.forEach {
-                if (it.name == playerName)
-                    scoreboard.put(player.name, player.score)
-            }
-
-
-            playerTemp.add(player.name)
-            println("Player $playerName has been created...")
+        println("Insert player 2 name ")
+        val playerName2: String = readLine().toString().lowercase()
+        if(scoreboard.containsKey(playerName1) && scoreboard.containsKey(playerName2)){
+            val player1 = User(playerName1,scoreboard.getValue(playerName1))
+            val player2 = User(playerName2,scoreboard.getValue(playerName2))
+            playerList.add(player1)
+            playerList.add(player2)
+            scoreboard.put(player1.name, scoreboard.getValue(playerName1))
+            scoreboard.put(player2.name, scoreboard.getValue(playerName2))
+            playerTemp.add(player1.name)
+            playerTemp.add(player2.name)
+            println("Player $playerName1 & $playerName2 has been created...")
             println("======================")
-            println("Input $playerName : ")
-            val playerChoice: String = readLine().toString().lowercase()
-            if (choice.contains(playerChoice)) {
-                userInputTemp.add(playerChoice)
+            println("Input $playerName1 : ")
+            val playerChoice1: String = readLine().toString().lowercase()
+            println("Input $playerName2 : ")
+            val playerChoice2: String = readLine().toString().lowercase()
+            if (choice.contains(playerChoice1) && choice.contains(playerChoice2)) {
+                userInputTemp.add(playerChoice1)
+                userInputTemp.add(playerChoice2)
                 if (userInputTemp.size == 2) {
                     when {
                         ((userInputTemp[0] == "gunting" && userInputTemp[1] == "kertas")
                                 || (userInputTemp[0] == "kertas" && userInputTemp[1] == "batu")
                                 || (userInputTemp[0] == "batu" && userInputTemp[1] == "gunting")) -> {
 
-                            //scoreboard.get(playerTemp[0])?.let { scoreboard.put(playerTemp[0], it.plus(1)) }
-                            for (i in 0..playerList.size.minus(1)) {
-                                if (playerList[i].name == playerTemp[0]) {
-                                    playerList[i].score += 1
-                                    scoreboard[playerList[i].name] = playerList[i].score
-                                }
-
-                            }
-                            //player.score = scoreboard.getValue(playerTemp[0])
-                            println("${playerTemp[0]} WIN!")
+                            player1.score += 1
+                            //scoreboard[player1.name] = player1.score
+                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            println("${player1.name} WIN!")
                             menu()
 
                         }
@@ -84,17 +79,10 @@ class GameController : User("CPU"), Callback {
                                 || (userInputTemp[1] == "kertas" && userInputTemp[0] == "batu")
                                 || (userInputTemp[1] == "batu" && userInputTemp[0] == "gunting")) -> {
 
-                            //scoreboard.get(playerTemp[1])?.let { scoreboard.put(playerTemp[1], it.plus(1)) }
-                            for (i in 0..playerList.size.minus(1)) {
-                                if (playerList[i].name == playerTemp[1]) {
-                                    playerList[i].score++
-                                    scoreboard[playerList[i].name] = playerList[i].score
-                                }
-
-                            }
-                            //scoreboard.put(playerTemp[1], scoreboard.getValue(playerTemp[1] + 1))
-                            //player.score = scoreboard.getValue(playerTemp[1])
-                            println("${playerTemp[1]} WIN!")
+                            player2.score += 1
+                            //scoreboard[player2.name] = player2.score
+                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            println("${player2.name} WIN!")
                             menu()
 
                         }
@@ -106,67 +94,64 @@ class GameController : User("CPU"), Callback {
                 }
             } else {
                 println("Available input = 'gunting','batu','kertas'")
-                gameStart()
+                gameLogic()
             }
+        }else {
+            val player1 = User(playerName1, 0)
+            val player2 = User(playerName2, 0)
+            playerList.add(player1)
+            playerList.add(player2)
+            scoreboard.put(player1.name, 0)
+            scoreboard.put(player2.name, 0)
+            playerTemp.add(player1.name)
+            playerTemp.add(player2.name)
+            println("Player $playerName1 & $playerName2 has been created...")
+            println("======================")
+            println("Input $playerName1 : ")
+            val playerChoice1: String = readLine().toString().lowercase()
+            println("Input $playerName2 : ")
+            val playerChoice2: String = readLine().toString().lowercase()
+            if (choice.contains(playerChoice1) && choice.contains(playerChoice2)) {
+                userInputTemp.add(playerChoice1)
+                userInputTemp.add(playerChoice2)
+                if (userInputTemp.size == 2) {
+                    when {
+                        ((userInputTemp[0] == "gunting" && userInputTemp[1] == "kertas")
+                                || (userInputTemp[0] == "kertas" && userInputTemp[1] == "batu")
+                                || (userInputTemp[0] == "batu" && userInputTemp[1] == "gunting")) -> {
 
+                            player1.score += 1
+                            //scoreboard[player1.name] = player1.score
+                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            println("${player1.name} WIN!")
+                            menu()
 
-            /*if (!playerList.contains(player) && !(scoreboard.containsKey(player.name))) {
-                    scoreboard.put(player.name, player.score)
-                    playerList.add(player)
-                    playerTemp.add(player.name)
-                    println("Player $playerName has been created...")
-                    println("======================")
-                    println("Input $playerName : ")
-                    val playerChoice: String = readLine().toString().lowercase()
-                    if (choice.contains(playerChoice)) {
-                        userInputTemp.add(playerChoice)
-                        if (userInputTemp.size == 2) {
-                            when {
-                                ((userInputTemp[0] == "gunting" && userInputTemp[1] == "kertas")
-                                        || (userInputTemp[0] == "kertas" && userInputTemp[1] == "batu")
-                                        || (userInputTemp[0] == "batu" && userInputTemp[1] == "gunting")) -> {
-                                    player.score++;
-                                    scoreboard.get(playerTemp[0])?.let { scoreboard.put(playerTemp[0], it.plus(1)) }
-
-                                    println("${playerTemp[0]} WIN!")
-                                    userInputTemp.clear()
-                                    playerTemp.clear()
-                                    menu()
-
-                                }
-                                ((userInputTemp[1] == "gunting" && userInputTemp[0] == "kertas")
-                                        || (userInputTemp[1] == "kertas" && userInputTemp[0] == "batu")
-                                        || (userInputTemp[1] == "batu" && userInputTemp[0] == "gunting")) -> {
-                                    player.score++;
-                                    scoreboard.get(playerTemp[1])?.let { scoreboard.put(playerTemp[1], it.plus(1)) }
-
-                                    println("${playerTemp[1]} WIN!")
-                                    userInputTemp.clear()
-                                    playerTemp.clear()
-
-                                    menu()
-
-                                }
-                                else -> {
-                                    println("DRAW!")
-                                    menu()
-                                }
-                            }
                         }
-                    } else {
+                        ((userInputTemp[1] == "gunting" && userInputTemp[0] == "kertas")
+                                || (userInputTemp[1] == "kertas" && userInputTemp[0] == "batu")
+                                || (userInputTemp[1] == "batu" && userInputTemp[0] == "gunting")) -> {
 
-                        gameStart()
+                            player2.score += 1
+                            //scoreboard[player2.name] = player2.score
+                            scoreboard.put(player1.name, scoreboard.getValue(player1.name)+1)
+                            println("${player2.name} WIN!")
+                            menu()
+
+                        }
+                        else -> {
+                            println("DRAW!")
+                            menu()
+                        }
                     }
-
-
-                } else {
-                    println("Player is already exist!!")
-                    menu()
-                }*/
-
-
+                }
+            } else {
+                println("Available input = 'gunting','batu','kertas'")
+                gameLogic()
+            }
         }
+
     }
+
 
     override fun leaderboard() {
         println("")
@@ -175,13 +160,7 @@ class GameController : User("CPU"), Callback {
 
 
         for (key in scoreboard.keys) {
-            println("${key}=${scoreboard[key]}")
-        }
-    }
-
-    fun printPlayerName() {
-        for (i in 0..playerList.size.minus(1)) {
-            println(playerList[i].name)
+            println("${key} = ${scoreboard[key]}")
         }
     }
 
