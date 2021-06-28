@@ -52,9 +52,9 @@ class GameController : User("CPU",0), ILeaderBoard {
             playerTemp.add(player2.name)
             println("Player $playerName1 & $playerName2 has been created...")
             println("======================")
-            println("Input $playerName1 : ")
+            println("Input (batu,gunting,kertas) $playerName1 : ")
             val playerChoice1: String = readLine().toString().lowercase()
-            println("Input $playerName2 : ")
+            println("Input (batu,gunting,kertas) $playerName2 : ")
             val playerChoice2: String = readLine().toString().lowercase()
             if (choice.contains(playerChoice1) && choice.contains(playerChoice2)) {
                 userInputTemp.add(playerChoice1)
